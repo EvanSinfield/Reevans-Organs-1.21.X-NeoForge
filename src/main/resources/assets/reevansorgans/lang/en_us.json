@@ -1,0 +1,16 @@
+{
+  "item.reevansorgans.brain": "Brain",
+  "item.reevansorgans.heart": "Heart",
+  "item.reevansorgans.intestines": "Intestines",
+  "item.reevansorgans.kidney": "Kidney",
+  "item.reevansorgans.liver": "Liver",
+  "item.reevansorgans.lungs": "Lungs",
+  "item.reevansorgans.pancreas": "Pancreas",
+  "item.reevansorgans.stomach": "Stomach",
+  "item.reevansorgans.thyroid": "Thyroid",
+
+  "creativetab.organs_tab": "Organ Tab",
+
+  "key.reevansorgans.market_key": "Market Menu",
+  "menu.reevansorgans.market_menu": "Market Menu"
+}
