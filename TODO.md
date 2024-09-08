@@ -16,7 +16,8 @@
 
 ## Evans WIP
 
-
+Market data - i think it should be done but i need to try changing and saving
+it using packets so i wont cross it off yet
 
 ## Mikolajs WIP
 

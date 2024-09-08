@@ -1,7 +1,10 @@
 package net.reevan.reevansorgans;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.reevan.reevansorgans.item.ModCreativeTab;
 import net.reevan.reevansorgans.item.ModItems;
+import net.reevan.reevansorgans.market.MarketSaveData;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -66,7 +69,14 @@ public class ReevansOrgans
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
+        MarketSaveData marketSaveData = new MarketSaveData();
+        marketSaveData = event.getServer().overworld().getDataStorage().computeIfAbsent(
+                new SavedData.Factory<>(marketSaveData::create, marketSaveData::load), "market");
 
+        LOGGER.info("Server started");
+        LOGGER.info("Market save data: {}", marketSaveData);
+        LOGGER.info("Market prices: {}", marketSaveData.getPrices());
+        LOGGER.info("Market demand: {}", marketSaveData.getDemand());
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
@@ -76,7 +86,7 @@ public class ReevansOrgans
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-
+            LOGGER.info("Client setup");
         }
     }
 }
