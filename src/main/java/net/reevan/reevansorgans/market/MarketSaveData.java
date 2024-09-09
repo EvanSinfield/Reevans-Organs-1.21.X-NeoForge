@@ -31,13 +31,18 @@ public class MarketSaveData extends SavedData {
         return data;
     }
 
-    public void setPrices(int index, int amount) {
-        prices[index] = amount;
+    public void setPrices(int[] newPrices) {
+        this.prices = newPrices;
         setDirty();
     }
 
     public void setDemand(int[] demand) {
         this.demand = demand;
+        setDirty();
+    }
+
+    public void setDemand(int index, int amount) {
+        this.demand[index] = amount;
         setDirty();
     }
 

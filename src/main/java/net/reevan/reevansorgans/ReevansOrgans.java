@@ -1,9 +1,10 @@
 package net.reevan.reevansorgans;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.reevan.reevansorgans.item.ModCreativeTab;
 import net.reevan.reevansorgans.item.ModItems;
+import net.reevan.reevansorgans.market.MarketManager;
 import net.reevan.reevansorgans.market.MarketSaveData;
 import org.slf4j.Logger;
 
@@ -21,6 +22,8 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
+import java.util.Random;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ReevansOrgans.MODID)
@@ -47,6 +50,8 @@ public class ReevansOrgans
 
         ModCreativeTab.register(modEventBus);
 
+        MarketManager.register();
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
@@ -59,7 +64,6 @@ public class ReevansOrgans
 
     }
 
-    // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
 
@@ -69,15 +73,22 @@ public class ReevansOrgans
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-        MarketSaveData marketSaveData = new MarketSaveData();
-        marketSaveData = event.getServer().overworld().getDataStorage().computeIfAbsent(
-                new SavedData.Factory<>(marketSaveData::create, marketSaveData::load), "market");
-
-        LOGGER.info("Server started");
-        LOGGER.info("Market save data: {}", marketSaveData);
-        LOGGER.info("Market prices: {}", marketSaveData.getPrices());
-        LOGGER.info("Market demand: {}", marketSaveData.getDemand());
+        // im going to keep this for future reference
+//        MarketSaveData marketSaveData = new MarketSaveData();
+//        marketSaveData = event.getServer().overworld().getDataStorage().computeIfAbsent(
+//                new SavedData.Factory<>(marketSaveData::create, marketSaveData::load), "market");
+//
+//        LOGGER.info("Server started");
+//        LOGGER.info("Market save data: {}", marketSaveData);
+//        LOGGER.info("Market prices: {}", marketSaveData.getPrices());
+//        LOGGER.info("Market demand: {}", marketSaveData.getDemand());
     }
+
+    // this is useful for testing but not needed
+//    @SubscribeEvent
+//    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+//
+//    }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

@@ -2,9 +2,11 @@
 
 ---
 
-- [ ] Add market Saved data to overworld
-- [ ] add credits nbt to player
-- [ ] Add a method which updates market data 
+- [X] Add market Saved data to overworld
+- - [ ] check data is synced over server - i dont see why it 
+wouldnt but better cherck
+- [X] add credits nbt to player
+- [X] Add a method which updates market data
 - [ ] Add market block
 - [ ] Add market screen
 - [ ] Add network packets
@@ -14,10 +16,19 @@
 
 ---
 
+## Optional
+
+- [ ] Commands to help debug market
+- - [ ] show prices / demand
+- - [ ] change prices / demand
+- - [ ] force market update
+- [ ] market crash event
+
+---
+
 ## Evans WIP
 
-Market data - i think it should be done but i need to try changing and saving
-it using packets so i wont cross it off yet
+
 
 ## Mikolajs WIP
 
