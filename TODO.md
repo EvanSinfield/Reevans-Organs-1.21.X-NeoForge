@@ -4,7 +4,7 @@
 
 - [X] Add market Saved data to overworld
 - - [ ] check data is synced over server - i dont see why it 
-wouldnt but better cherck
+wouldnt but better check
 - [X] add credits nbt to player
 - [X] Add a method which updates market data
 - [ ] Add market block
@@ -23,12 +23,15 @@ wouldnt but better cherck
 - - [ ] change prices / demand
 - - [ ] force market update
 - [ ] market crash event
+- [ ] add a volatility param for the organs - this would affect how much 
+they fluctuate
 
 ---
 
 ## Evans WIP
 
-
+added a packet for sending an organs price, i cant test it until the 
+block is added so ill hold off on other packets.
 
 ## Mikolajs WIP
 
