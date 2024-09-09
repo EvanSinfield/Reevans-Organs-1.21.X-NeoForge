@@ -5,6 +5,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.reevan.reevansorgans.block.ModBlocks;
 import net.reevan.reevansorgans.item.ModCreativeTab;
 import net.reevan.reevansorgans.item.ModItems;
 import net.reevan.reevansorgans.market.MarketManager;
@@ -51,6 +52,7 @@ public class ReevansOrgans
         NeoForge.EVENT_BUS.register(this);
 
         ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
 
         ModCreativeTab.register(modEventBus);
 
@@ -89,7 +91,7 @@ public class ReevansOrgans
     }
 
      // this is useful for testing but not needed
-    @SubscribeEvent
+//    @SubscribeEvent
 //    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
 //
 //    }
