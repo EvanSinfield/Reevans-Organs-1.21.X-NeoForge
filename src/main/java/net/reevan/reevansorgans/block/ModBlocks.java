@@ -22,7 +22,7 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> MARKET_BLOCK = registerBlock("Market",
             () -> new Block(BlockBehaviour.Properties.of()
-                    .destroyTime(1.5f) // this shit asks for a float but when I put a float into it, it doesn't work
+                    .strength(1.5f) // this shit asks for a float but when I put a float into it, it doesn't work
                     .lightLevel(state -> 3)
                     .sound(SoundType.DEEPSLATE)
                     .friction(0.95f) // but the floats work here? stupid fucking language
