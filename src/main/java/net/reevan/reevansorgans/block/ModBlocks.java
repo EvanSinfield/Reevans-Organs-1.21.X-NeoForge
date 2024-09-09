@@ -20,9 +20,9 @@ public class ModBlocks {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ReevansOrgans.MODID);
 
-    public static final DeferredBlock<Block> MARKET_BLOCK = BLOCKS.registerBlock("Market",
+    public static final DeferredBlock<Block> MARKET_BLOCK = registerBlock("Market",
             () -> new Block(BlockBehaviour.Properties.of()
-                    .destroyTime() // this shit asks for a float but when I put a float into it, it doesn't work
+                    .destroyTime(1.5f) // this shit asks for a float but when I put a float into it, it doesn't work
                     .lightLevel(state -> 3)
                     .sound(SoundType.DEEPSLATE)
                     .friction(0.95f) // but the floats work here? stupid fucking language
