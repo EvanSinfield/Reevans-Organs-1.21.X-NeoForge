@@ -13,6 +13,7 @@ wouldnt but better check
 - - [ ] Item bought
 - - [ ] Item sold
 - - [ ] get item cost
+- [ ] remeber to remove organ_base.json
 
 ---
 
@@ -23,8 +24,11 @@ wouldnt but better check
 - - [ ] change prices / demand
 - - [ ] force market update
 - [ ] market crash event
-- [ ] add a volatility param for the organs - this would affect how much 
+- [X] add a volatility param for the organs - this would affect how much 
 they fluctuate
+- [ ] organ functions
+- - [ ] buffs
+- - [ ] failiure
 
 ---
 

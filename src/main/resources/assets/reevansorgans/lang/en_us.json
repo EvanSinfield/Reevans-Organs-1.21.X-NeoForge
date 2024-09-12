@@ -9,8 +9,7 @@
   "item.reevansorgans.stomach": "Stomach",
   "item.reevansorgans.thyroid": "Thyroid",
 
-  "creativetab.organs_tab": "Organ Tab",
+  "block.reevansorgans.market_block": "Market Block",
 
-  "key.reevansorgans.market_key": "Market Menu",
-  "menu.reevansorgans.market_menu": "Market Menu"
+  "creativetab.organs_tab": "Organ Tab"
 }
