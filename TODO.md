@@ -2,18 +2,28 @@
 
 ---
 
+## High Priority
+
+- [X] fix market recipe
+- [X] check block light level
+- [X] fix market item texture
+ 
+---
+
+## Low Priority
+
 - [X] Add market Saved data to overworld
 - - [ ] check data is synced over server - i dont see why it 
 wouldnt but better check
 - [X] add credits nbt to player
 - [X] Add a method which updates market data
-- [ ] Add market block
+- [X] Add market block
+- [ ] add market block entity
 - [ ] Add market screen
 - [ ] Add network packets
 - - [ ] Item bought
 - - [ ] Item sold
 - - [ ] get item cost
-- [ ] remeber to remove organ_base.json
 
 ---
 
@@ -29,6 +39,12 @@ they fluctuate
 - [ ] organ functions
 - - [ ] buffs
 - - [ ] failiure
+
+---
+
+## Final
+
+- [ ] remeber to remove organ_base.json
 
 ---
 

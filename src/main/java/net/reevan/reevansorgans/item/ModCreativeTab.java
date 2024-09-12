@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.reevan.reevansorgans.ReevansOrgans;
+import net.reevan.reevansorgans.block.ModBlocks;
 
 import java.util.function.Supplier;
 
@@ -27,6 +28,7 @@ public class ModCreativeTab {
                         output.accept(ModItems.PANCREAS);
                         output.accept(ModItems.STOMACH);
                         output.accept(ModItems.THYROID);
+                        output.accept(ModBlocks.MARKET_BLOCK);
                     })).build());
 
     public static void register(IEventBus eventBus) {

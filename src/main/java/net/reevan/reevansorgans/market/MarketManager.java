@@ -15,11 +15,11 @@ import java.util.Random;
 @EventBusSubscriber(modid = ReevansOrgans.MODID)
 public class MarketManager {
     public static final Random random = new Random();
-    private static final Logger LOGGER = LogUtils.getLogger();
+    // private static final Logger LOGGER = LogUtils.getLogger();
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        int chance = random.nextInt(120);  // TODO: change this
+        int chance = random.nextInt(1200);
 
         // 20 ticks a second, 1/1200 * 20 = 1/60 or ~every minute
         if (chance == 1) {
@@ -55,13 +55,15 @@ public class MarketManager {
             newPrices[i] = prices[i] + (int)(random.nextInt(lowerBound, upperBound) * VOLATILITY[i]);
             demand[i] = 0;
 
-            if (newPrices[i] )
+            if (newPrices[i] < 0) {
+                newPrices[i] = 0;
+            }
         }
 
         marketSaveData.setPrices(newPrices);
         marketSaveData.setDemand(demand);
 
-        LOGGER.info("Market prices: {}", newPrices);
+        // LOGGER.info("Market prices: {}", newPrices);
     }
 
     public static void register() {

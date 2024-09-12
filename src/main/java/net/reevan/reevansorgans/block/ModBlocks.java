@@ -22,7 +22,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> MARKET_BLOCK = registerBlock("market_block",
             () -> new Block(BlockBehaviour.Properties.of()
                     .strength(1.5f)
-                    .lightLevel(state -> 3)
+                    .lightLevel(state -> 6)  // 3 makes it have more shadows than normal
                     .sound(SoundType.METAL)
             ));
 
@@ -38,6 +38,5 @@ public class ModBlocks {
 
     public static void register(IEventBus eventBus) {
          BLOCKS.register(eventBus);
-
     }
 }
