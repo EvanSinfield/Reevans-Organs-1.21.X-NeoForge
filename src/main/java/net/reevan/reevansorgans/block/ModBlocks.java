@@ -21,9 +21,9 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> MARKET_BLOCK = registerBlock("market_block",
             () -> new MarketBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f)
                     .lightLevel(state -> 6)  // 3 makes it have more shadows than normal
                     .sound(SoundType.METAL)
+                    .strength(3f)
             ));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {

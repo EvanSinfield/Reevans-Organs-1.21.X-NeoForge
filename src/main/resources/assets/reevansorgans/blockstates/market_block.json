@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "reevansorgans:block/market_block"
+    },
+    "facing=east": {
+      "model": "reevansorgans:block/market_block",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "reevansorgans:block/market_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "reevansorgans:block/market_block",
+      "y": 270
     }
   }
 }

@@ -9,7 +9,7 @@ import net.reevan.reevansorgans.block.ModBlocks;
 
 import java.util.function.Supplier;
 
-public class ModBlockEntites {
+public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, ReevansOrgans.MODID);
 

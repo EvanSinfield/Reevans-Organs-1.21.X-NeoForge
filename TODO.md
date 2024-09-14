@@ -7,7 +7,8 @@
 - [X] fix market recipe
 - [X] check block light level
 - [X] fix market item texture
-- [ ] make sure market block has loot table
+- [X] make sure market block has loot table
+- [X] check where villager menu start / ends on screen
  
 ---
 
@@ -19,10 +20,11 @@ wouldnt but better check
 - [X] add credits nbt to player
 - [X] Add a method which updates market data
 - [X] Add market block
+- - [ ] make particles nicer
 - [X] add market block entity
-- - [ ] give inventory
-- [ ] Add market screen
-- - [ ] make screen asset
+- - [X] give inventory
+- [X] Add market screen
+- - [X] make screen asset
 - - [ ] make menu function
 - [ ] Add network packets
 - - [ ] Item bought
