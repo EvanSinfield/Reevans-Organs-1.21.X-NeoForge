@@ -19,8 +19,11 @@ wouldnt but better check
 - [X] add credits nbt to player
 - [X] Add a method which updates market data
 - [X] Add market block
-- [ ] add market block entity
+- [X] add market block entity
+- - [ ] give inventory
 - [ ] Add market screen
+- - [ ] make screen asset
+- - [ ] make menu function
 - [ ] Add network packets
 - - [ ] Item bought
 - - [ ] Item sold

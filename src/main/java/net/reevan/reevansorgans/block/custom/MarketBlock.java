@@ -22,12 +22,20 @@ import net.reevan.reevansorgans.block.entity.MarketBlockEntity;
 import net.reevan.reevansorgans.screen.MarketMenu;
 import org.jetbrains.annotations.Nullable;
 
-public class MarketBlock extends Block implements EntityBlock {
-    public static final VoxelShape SHAPE = Block.box(0,0,0,16,13,16);
+public class MarketBlock extends  Block implements EntityBlock {
+    public static final VoxelShape SHAPE = Block.box(0,0,0,16,12,16);
+    public static final MapCodec<MarketBlock> CODEC = simpleCodec(MarketBlock::new);
 
     public MarketBlock(Properties properties) {
         super(properties);
     }
+
+/*
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+*/
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -35,11 +43,11 @@ public class MarketBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof MarketBlockEntity) {
-                player.openMenu(state.getMenuProvider(level, pos));
+                player.openMenu((MarketBlockEntity)blockEntity, pos);
             }
         }
 

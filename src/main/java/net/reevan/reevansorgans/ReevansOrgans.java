@@ -1,7 +1,9 @@
 package net.reevan.reevansorgans;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -12,6 +14,7 @@ import net.reevan.reevansorgans.item.ModItems;
 import net.reevan.reevansorgans.market.MarketManager;
 import net.reevan.reevansorgans.market.MarketSaveData;
 import net.reevan.reevansorgans.network.CurrentOrganPrice;
+import net.reevan.reevansorgans.screen.MarketScreen;
 import net.reevan.reevansorgans.screen.ModMenuTypes;
 import org.slf4j.Logger;
 
@@ -110,6 +113,11 @@ public class ReevansOrgans
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             LOGGER.info("Client setup");
+        }
+
+        @SubscribeEvent
+        public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+            event.register((MenuType)ModMenuTypes.MARKET_MENU.get(), MarketScreen::new);
         }
     }
 }

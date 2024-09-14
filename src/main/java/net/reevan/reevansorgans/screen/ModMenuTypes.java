@@ -6,6 +6,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.reevan.reevansorgans.ReevansOrgans;
 
@@ -16,7 +17,7 @@ public class ModMenuTypes {
             Registries.MENU, ReevansOrgans.MODID);
 
     public static final Supplier<MenuType<MarketMenu>> MARKET_MENU = MENU_TYPES.register(
-            "market_menu", () -> new MenuType(MarketMenu::new, FeatureFlags.DEFAULT_FLAGS));
+            "market_menu", () -> {return IMenuTypeExtension.create(MarketMenu::new);});
 
     public static void register(IEventBus eventBus) {
         MENU_TYPES.register(eventBus);

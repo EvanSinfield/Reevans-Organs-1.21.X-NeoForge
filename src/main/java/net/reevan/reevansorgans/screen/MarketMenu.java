@@ -1,5 +1,6 @@
 package net.reevan.reevansorgans.screen;
 
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -15,6 +16,10 @@ public class MarketMenu extends AbstractContainerMenu {
 
     public MarketMenu(int containerId, Inventory inventory) {
         super(ModMenuTypes.MARKET_MENU.get(), containerId);
+    }
+
+    public MarketMenu(int i, Inventory inventory, RegistryFriendlyByteBuf registryFriendlyByteBuf) {
+        super(ModMenuTypes.MARKET_MENU.get(), i);
     }
 
     @Override
