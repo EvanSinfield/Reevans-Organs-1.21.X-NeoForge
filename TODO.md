@@ -7,6 +7,7 @@
 - [X] fix market recipe
 - [X] check block light level
 - [X] fix market item texture
+- [ ] make sure market block has loot table
  
 ---
 
@@ -53,9 +54,11 @@ they fluctuate
 added a packet for sending an organs price, i cant test it until the 
 block is added so ill hold off on other packets.
 
+I fucking hate block entities
+
 ## Mikolajs WIP
 
-market block
+
 
 ---
 

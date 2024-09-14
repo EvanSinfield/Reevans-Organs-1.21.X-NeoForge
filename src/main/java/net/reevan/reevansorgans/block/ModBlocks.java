@@ -1,7 +1,6 @@
 package net.reevan.reevansorgans.block;
 
 
-import io.netty.resolver.DefaultHostsFileEntriesResolver;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -11,6 +10,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.reevan.reevansorgans.ReevansOrgans;
+import net.reevan.reevansorgans.block.custom.MarketBlock;
 import net.reevan.reevansorgans.item.ModItems;
 
 import java.util.function.Supplier;
@@ -20,7 +20,7 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ReevansOrgans.MODID);
 
     public static final DeferredBlock<Block> MARKET_BLOCK = registerBlock("market_block",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new MarketBlock(BlockBehaviour.Properties.of()
                     .strength(1.5f)
                     .lightLevel(state -> 6)  // 3 makes it have more shadows than normal
                     .sound(SoundType.METAL)

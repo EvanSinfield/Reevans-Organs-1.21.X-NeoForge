@@ -6,11 +6,13 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.reevan.reevansorgans.block.ModBlocks;
+import net.reevan.reevansorgans.block.entity.ModBlockEntites;
 import net.reevan.reevansorgans.item.ModCreativeTab;
 import net.reevan.reevansorgans.item.ModItems;
 import net.reevan.reevansorgans.market.MarketManager;
 import net.reevan.reevansorgans.market.MarketSaveData;
 import net.reevan.reevansorgans.network.CurrentOrganPrice;
+import net.reevan.reevansorgans.screen.ModMenuTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -53,6 +55,10 @@ public class ReevansOrgans
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+
+        ModBlockEntites.register(modEventBus);
+
+        ModMenuTypes.register(modEventBus);
 
         ModCreativeTab.register(modEventBus);
 
