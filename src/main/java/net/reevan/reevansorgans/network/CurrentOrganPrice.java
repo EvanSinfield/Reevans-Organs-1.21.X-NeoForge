@@ -6,10 +6,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.HandlerThread;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.reevan.reevansorgans.ReevansOrgans;
+
 
 public record CurrentOrganPrice(int index, int price) implements CustomPacketPayload {
 
@@ -27,16 +29,5 @@ public record CurrentOrganPrice(int index, int price) implements CustomPacketPay
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
-    }
-
-    @SubscribeEvent
-    public static void register(final RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar("1")
-                .executesOn(HandlerThread.NETWORK);
-        registrar.playToClient(
-                CurrentOrganPrice.TYPE,
-                CurrentOrganPrice.STREAM_CODEC,
-                ClientPayloadHandler::handleDataOnMain
-        );
     }
 }

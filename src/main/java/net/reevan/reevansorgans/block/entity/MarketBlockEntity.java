@@ -11,9 +11,11 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.reevan.reevansorgans.block.entity.inventory.MarketBlockItemHandler;
+import net.reevan.reevansorgans.market.MarketSaveData;
 import net.reevan.reevansorgans.screen.MarketMenu;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,11 +58,10 @@ public class MarketBlockEntity extends BlockEntity implements MenuProvider {
         return Component.translatable("block.reevansorgans.market_block");
     }
 
-
     @Override
     public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.put("Inventory", this.inventory.serializeNBT(registries));
+        tag.put("inventory", this.inventory.serializeNBT(registries));
     }
 
     @Override

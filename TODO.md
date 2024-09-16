@@ -25,11 +25,12 @@ wouldnt but better check
 - - [X] give inventory
 - [X] Add market screen
 - - [X] make screen asset
-- - [ ] make menu function
-- [ ] Add network packets
+- - [X] make menu function
+- - [ ] buy and sell buttons
+- [X] Add network packets
 - - [ ] Item bought
 - - [ ] Item sold
-- - [ ] get item cost
+- - [X] get item cost
 
 ---
 
@@ -51,15 +52,14 @@ they fluctuate
 ## Final
 
 - [ ] remeber to remove organ_base.json
+- [ ] go through and remove all redundant logger
 
 ---
 
 ## Evans WIP
 
-added a packet for sending an organs price, i cant test it until the 
-block is added so ill hold off on other packets.
-
-I fucking hate block entities
+working on menu, needs buy and sell functionality, needs organ descriptions,
+try add price over time to render graph.
 
 ## Mikolajs WIP
 
