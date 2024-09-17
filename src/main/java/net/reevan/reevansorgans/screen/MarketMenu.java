@@ -50,6 +50,10 @@ public class MarketMenu extends AbstractContainerMenu {
         return this.inventory.getStackInSlot(0);
     }
 
+    public void setOrganSlot(ItemStack item) {
+        this.inventory.extractItem(0,1, false);
+    }
+
     public MarketMenu(int i, Inventory inventory, RegistryFriendlyByteBuf data) {
         this(i, inventory, getTileEntity(inventory, data), new SimpleContainerData(1));
     }
@@ -61,7 +65,7 @@ public class MarketMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(this.levelAccess, player, (Block) ModBlocks.MARKET_BLOCK.get());  // TODO set this up properly
+        return stillValid(this.levelAccess, player, (Block) ModBlocks.MARKET_BLOCK.get());
     }
 
     private static MarketBlockEntity getTileEntity(Inventory playerInventory, FriendlyByteBuf data) {

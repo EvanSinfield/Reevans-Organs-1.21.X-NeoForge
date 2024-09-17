@@ -22,7 +22,13 @@ public class PacketManager {
         registrar.playToServer(
                 RequestPrice.TYPE,
                 RequestPrice.STREAM_CODEC,
-                ServerPayloadHandler::handleDataOnNetwork
+                ServerPayloadHandler::handlePriceRequest
+        );
+
+        registrar.playToServer(
+                ChangeOrganDemand.TYPE,
+                ChangeOrganDemand.STREAM_CODEC,
+                ServerPayloadHandler::handleDemand
         );
 
         registrar.playToClient(

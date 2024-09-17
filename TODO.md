@@ -20,16 +20,14 @@ wouldnt but better check
 - [X] add credits nbt to player
 - [X] Add a method which updates market data
 - [X] Add market block
-- - [ ] make particles nicer
 - [X] add market block entity
 - - [X] give inventory
 - [X] Add market screen
 - - [X] make screen asset
 - - [X] make menu function
-- - [ ] buy and sell buttons
+- - [ ] buy and sell buttons - edits credit data
 - [X] Add network packets
-- - [ ] Item bought
-- - [ ] Item sold
+- - [X] Item bought/sold
 - - [X] get item cost
 
 ---
@@ -46,6 +44,9 @@ they fluctuate
 - [ ] organ functions
 - - [ ] buffs
 - - [ ] failiure
+- [ ] graph history of organ on screen
+- [ ] make particles nicer
+
 
 ---
 
@@ -63,7 +64,7 @@ try add price over time to render graph.
 
 ## Mikolajs WIP
 
-
+organ descriptions
 
 ---
 

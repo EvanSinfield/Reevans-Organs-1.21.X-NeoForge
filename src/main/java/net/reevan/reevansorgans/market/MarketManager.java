@@ -15,11 +15,11 @@ import java.util.Random;
 @EventBusSubscriber(modid = ReevansOrgans.MODID)
 public class MarketManager {
     public static final Random random = new Random();
-     private static final Logger LOGGER = LogUtils.getLogger();
+//     private static final Logger LOGGER = LogUtils.getLogger();
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        int chance = random.nextInt(20);
+        int chance = random.nextInt(1200);
 
         // 20 ticks a second, 1/1200 * 20 = 1/60 or ~every minute
         if (chance == 1) {
@@ -28,7 +28,7 @@ public class MarketManager {
     }
 
     public static void updateMarket(MinecraftServer server) {
-        final double[] VOLATILITY = {0.75, 1.0, 1.15, 1.1, 0.9, 0.85, 0.95, 1.25, 1.05};  // constants: 0.75 - 1.25 applies after update
+        final double[] VOLATILITY = {0.75, 1.0, 1.05, 1.1, 0.9, 0.85, 0.95, 1.25, 1.15};  // constants: 0.75 - 1.25 applies after update
 
         int upperBound;
         int lowerBound;

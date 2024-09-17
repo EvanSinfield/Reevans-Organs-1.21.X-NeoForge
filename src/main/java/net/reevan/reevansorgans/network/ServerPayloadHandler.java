@@ -9,9 +9,9 @@ import net.reevan.reevansorgans.market.MarketSaveData;
 import org.slf4j.Logger;
 
 public class ServerPayloadHandler {
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();  // FIXME: logger
 
-    public static void handleDataOnNetwork(final RequestPrice data, final IPayloadContext ctx) {
+    public static void handlePriceRequest(final RequestPrice data, final IPayloadContext ctx) {
         LOGGER.info("Received price request");
         LOGGER.info("index: {}", data.index());
 
@@ -21,5 +21,16 @@ public class ServerPayloadHandler {
 
         PacketDistributor.sendToPlayer((ServerPlayer)ctx.player(), new CurrentOrganPrice(data.index(),
                 marketSaveData.getPrices()[data.index()]));
+    }
+
+    public static void handleDemand(final ChangeOrganDemand data, final IPayloadContext ctx) {
+        LOGGER.info("Received demand update");
+        LOGGER.info("index: {}  demand: {}", data.index(), data.demand());
+
+        MarketSaveData marketSaveData = new MarketSaveData();
+        marketSaveData = ctx.player().getServer().overworld().getDataStorage().computeIfAbsent(
+                new SavedData.Factory<>(marketSaveData::create, marketSaveData::load), "market");
+
+        marketSaveData.setDemand(data.index(), data.demand());
     }
 }
