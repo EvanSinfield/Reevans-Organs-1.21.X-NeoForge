@@ -2,24 +2,21 @@ package net.reevan.reevansorgans.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.reevan.reevansorgans.ReevansOrgans;
-import net.reevan.reevansorgans.credits.PlayerCredits;
 import net.reevan.reevansorgans.item.ModItems;
-import net.reevan.reevansorgans.network.RequestPrice;
-import org.apache.logging.log4j.core.jmx.Server;
+import net.reevan.reevansorgans.network.packets.BuySellOrgan;
+import net.reevan.reevansorgans.network.packets.RequestCredits;
+import net.reevan.reevansorgans.network.packets.RequestPrice;
 import org.slf4j.Logger;
 
 import java.util.Random;
@@ -45,9 +42,11 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
     Item previousItem = null;
     int previousOrgan = -1;
     ResourceLocation organTexture;
+    ResourceLocation organDesc;
     int selectedOrgan;
     int organPrice = 0;
     boolean organInSlot = false;
+    int credits = 0;
 
     public MarketScreen(MarketMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -66,49 +65,49 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
         int y = (this.height - this.imageHeight) / 2;
 
         this.brainButton = this.addRenderableWidget(new ImageButton(x + 5, y + 14, 95, 16,
-                generateSprite("brain"), (press) -> {
+                generateButtonSprite("brain"), (press) -> {
             this.selectedOrgan = 0;
         }));
         this.heartButton = this.addRenderableWidget(new ImageButton(x + 5, y + 30, 95, 16,
-                generateSprite("heart"), (press) -> {
+                generateButtonSprite("heart"), (press) -> {
             this.selectedOrgan = 1;
         }));
         this.intestinesButton = this.addRenderableWidget(new ImageButton(x + 5, y + 46, 95, 16,
-                generateSprite("intestines"), (press) -> {
+                generateButtonSprite("intestines"), (press) -> {
             this.selectedOrgan = 2;
         }));
         this.kidneyButton = this.addRenderableWidget(new ImageButton(x + 5, y + 62, 95, 16,
-                generateSprite("kidney"), (press) -> {
+                generateButtonSprite("kidney"), (press) -> {
             this.selectedOrgan = 3;
         }));
         this.liverButton = this.addRenderableWidget(new ImageButton(x + 5, y + 78, 95, 16,
-                generateSprite("liver"), (press) -> {
+                generateButtonSprite("liver"), (press) -> {
             this.selectedOrgan = 4;
         }));
         this.lungsButton = this.addRenderableWidget(new ImageButton(x + 5, y + 94, 95, 16,
-                generateSprite("lungs"), (press) -> {
+                generateButtonSprite("lungs"), (press) -> {
             this.selectedOrgan = 5;
         }));
         this.pancreasButton = this.addRenderableWidget(new ImageButton(x + 5, y + 110, 95, 16,
-                generateSprite("pancreas"), (press) -> {
+                generateButtonSprite("pancreas"), (press) -> {
             this.selectedOrgan = 6;
         }));
         this.stomachButton = this.addRenderableWidget(new ImageButton(x + 5, y + 126, 95, 16,
-                generateSprite("stomach"), (press) -> {
+                generateButtonSprite("stomach"), (press) -> {
             this.selectedOrgan = 7;
         }));
         this.thyroidButton = this.addRenderableWidget(new ImageButton(x + 5, y + 142, 95, 16,
-                generateSprite("thyroid"), (press) -> {
+                generateButtonSprite("thyroid"), (press) -> {
             this.selectedOrgan = 8;
         }));
 
         this.buyButton = this.addRenderableWidget(new ImageButton(x + 110, y + 15, 26, 16,
-                generateSprite("buy"), (press) -> {
-            LOGGER.debug("Buy button clicked");  // TODO: implement this properly
+                generateButtonSprite("buy"), (press) -> {
+            buyOrgan(this.selectedOrgan);
         }));
         this.sellButton = this.addRenderableWidget(new ImageButton(x + 110, y + 34, 26, 16,
-                generateSprite("sell"), (press) -> {
-            LOGGER.debug("Sell button clicked");
+                generateButtonSprite("sell"), (press) -> {
+            sellOrgan();
         }));
 
         this.sellButton.active = false;
@@ -136,10 +135,12 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
     public void renderOrganInfo(GuiGraphics guiGraphics) {
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
+        PacketDistributor.sendToServer(RequestCredits.INSTANCE);
         Component estimateText;
 
         renderOrgan(guiGraphics);
 
+        guiGraphics.drawString(font, Component.literal("Credits: " + credits), x + 150, y + 49, 0xFFFFFF);
         guiGraphics.drawString(font, Component.literal("Cost: " + this.organPrice), x + 150, y + 58, 0xFFFFFF);
 
         if (organInSlot) {
@@ -153,32 +154,6 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
         }
 
         guiGraphics.drawString(font, estimateText, x + 150, y + 67, 0xFFFFFF);
-        guiGraphics.drawString(font, getOrganDesc(this.selectedOrgan), x + 185, y + 12, 0xFFFFFF);
-    }
-
-    public String getOrganDesc(int index) {
-        switch (index) {
-            case 0:
-                return "One of the rarer organs, one of these fuckers is in you right now.";
-            case 1:
-                return "The fact that you're currently selling one is ironic. 4 chambers of pure money.";
-            case 2:
-                return "Big or small, its still the same shit tube. Fluctuates in price wildly.";
-            case 3:
-                return "Deals with piss for you. Quite tasty in a pinch and.";
-            case 4:
-                return "Helps keep you alive after 15 shots of tequila. Or doctor pepper. Pick your poison.";
-            case 5:
-                return "Big wet meat balloons. We do not accept smokers or asbestos, sorry for any inconvenience.";
-            case 6:
-                return "The insulin is probably worth more than the pancreas, but money is money.";
-            case 7:
-                return "Deals with all the shit you eat. 20kg of Ben and Jerrys does de-value this.";
-            case 8:
-                return "F tier organ. Really susceptible to cancer for some reason.";
-
-            default: return "BAd N/A";
-        }
     }
 
     public void renderOrgan(GuiGraphics guiGraphics) {
@@ -189,47 +164,58 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
             switch (this.selectedOrgan) {
                 case (0):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/brain.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/brain_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 case (1):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/heart.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/heart_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 case (2):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/intestines.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/intestines_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 case (3):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/kidney.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/kidney_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 case (4):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/liver.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/liver_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 case (5):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/lungs.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/lungs_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 case (6):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/pancreas.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/pancreas_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 case (7):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/stomach.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/stomach_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 case (8):
                     this.organTexture = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/item/thyroid.png");
+                    this.organDesc = ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, "textures/gui/sprites/thyroid_desc.png");
                     PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
                     break;
                 default:
                     this.organTexture = null;
+                    this.organDesc = null;
             }
         }
 
         if (organTexture != null) {
             guiGraphics.blit(organTexture, x + 150, y + 12, 0, 0, 32, 32, 32, 32);
+//            guiGraphics.blit(organDesc, x, y, 0, 0, 512, 256, 512, 256);
         }
 
         this.previousOrgan = this.selectedOrgan;
@@ -274,7 +260,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
         }
     }
 
-    private WidgetSprites generateSprite(String name) {
+    private WidgetSprites generateButtonSprite(String name) {
         return new WidgetSprites(
                 ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, name+"_btn"),
                 ResourceLocation.fromNamespaceAndPath(ReevansOrgans.MODID, name+"_btn_inac"),
@@ -286,57 +272,116 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
     }
 
     public void buyOrgan(int index) {
-        int credits = this.minecraft.player.getPersistentData().getInt("credits");
+        LOGGER.debug("Buy pressed");
+
+        PacketDistributor.sendToServer(RequestCredits.INSTANCE);
+
+        LOGGER.debug("credits: {}", credits);
 
         if (credits > organPrice) {
-            if (this.menu.getOrganSlot() != ItemStack.EMPTY) {
-                ItemStack organ;
+            LOGGER.debug("sufficient credits");
 
-                this.minecraft.player.getPersistentData().putInt("credits", credits - organPrice);
+            if (this.menu.getOrganSlot() == ItemStack.EMPTY) {
+                LOGGER.debug("Slot empty");
 
-                switch (this.selectedOrgan) {
-                    case 0:
-                        organ = ModItems.BRAIN.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    case 1:
-                        organ = ModItems.HEART.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    case 2:
-                        organ = ModItems.INTESTINES.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    case 3:
-                        organ = ModItems.KIDNEY.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    case 4:
-                        organ = ModItems.LIVER.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    case 5:
-                        organ = ModItems.LUNGS.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    case 6:
-                        organ = ModItems.PANCREAS.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    case 7:
-                        organ = ModItems.STOMACH.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    case 8:
-                        organ = ModItems.THYROID.toStack();
-                        organ.setDamageValue(random.nextInt());
-                        break;
-                    default:
-                        organ = ItemStack.EMPTY;
-                }
+                PacketDistributor.sendToServer(new BuySellOrgan(this.selectedOrgan, 1));
 
-                this.menu.setOrganSlot(organ);
+                LOGGER.debug("demand packet sent");
             }
         }
+    }
+
+    public void sellOrgan() {
+        LOGGER.debug("Sell function started");
+
+        ItemStack organ = this.menu.getOrganSlot();
+        boolean sellAprove = false;
+        boolean priceCorrect = true;
+
+        if (organ.is(ModItems.BRAIN)) {
+            if (selectedOrgan != 0) {
+                this.selectedOrgan = 0;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        } else if (organ.is(ModItems.HEART)) {
+            if (selectedOrgan != 1) {
+                this.selectedOrgan = 1;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        } else if (organ.is(ModItems.INTESTINES)) {
+            if (selectedOrgan != 2) {
+                this.selectedOrgan = 2;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        } else if (organ.is(ModItems.KIDNEY)) {
+            if (selectedOrgan != 3) {
+                this.selectedOrgan = 3;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        } else if (organ.is(ModItems.LIVER)) {
+            if (selectedOrgan != 4) {
+                this.selectedOrgan = 4;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        } else if (organ.is(ModItems.LUNGS)) {
+            if (selectedOrgan != 5) {
+                this.selectedOrgan = 5;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        } else if (organ.is(ModItems.PANCREAS)) {
+            if (selectedOrgan != 6) {
+                this.selectedOrgan = 6;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        } else if (organ.is(ModItems.STOMACH)) {
+            if (selectedOrgan != 7) {
+                this.selectedOrgan = 7;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        } else if (organ.is(ModItems.THYROID)) {
+            if (selectedOrgan != 8) {
+                this.selectedOrgan = 8;
+                priceCorrect = false;
+            }
+            sellAprove = true;
+        }
+
+        LOGGER.debug("sell approve: {}", sellAprove);
+        LOGGER.debug("priceCorrect: {}", priceCorrect);
+
+        if (sellAprove) {
+            PacketDistributor.sendToServer(RequestCredits.INSTANCE);
+
+            if (!priceCorrect) {
+                int oldPrice = this.organPrice;
+                boolean wait = true;
+                PacketDistributor.sendToServer(new RequestPrice(this.selectedOrgan));
+
+                LOGGER.debug("old price {}", oldPrice);
+                LOGGER.debug("credits: {}", credits);
+
+                while (wait) {
+                    if (oldPrice != this.organPrice) {
+                        wait = false;  // XXX: this will freeze game until packets have been received and updated
+                    }
+                }
+
+                LOGGER.debug("wait over");
+            }
+
+            PacketDistributor.sendToServer(new BuySellOrgan(this.selectedOrgan, -1));
+        }
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
     }
 }

@@ -7,6 +7,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.HandlerThread;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.reevan.reevansorgans.ReevansOrgans;
+import net.reevan.reevansorgans.network.packets.*;
 import org.slf4j.Logger;
 
 @EventBusSubscriber(modid = ReevansOrgans.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -26,15 +27,27 @@ public class PacketManager {
         );
 
         registrar.playToServer(
-                ChangeOrganDemand.TYPE,
-                ChangeOrganDemand.STREAM_CODEC,
+                BuySellOrgan.TYPE,
+                BuySellOrgan.STREAM_CODEC,
                 ServerPayloadHandler::handleDemand
+        );
+
+        registrar.playToServer(
+                RequestCredits.TYPE,
+                RequestCredits.STREAM_CODEC,
+                RequestCredits::handle
         );
 
         registrar.playToClient(
                 CurrentOrganPrice.TYPE,
                 CurrentOrganPrice.STREAM_CODEC,
-                ClientPayloadHandler::handleDataOnNetwork
+                ClientPayloadHandler::handleOrganPrice
+        );
+
+        registrar.playToClient(
+                SendCredits.TYPE,
+                SendCredits.STREAM_CODEC,
+                ClientPayloadHandler::handleSendCredits
         );
 
         LOGGER.info("Packets registered");

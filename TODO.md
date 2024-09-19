@@ -9,6 +9,14 @@
 - [X] fix market item texture
 - [X] make sure market block has loot table
 - [X] check where villager menu start / ends on screen
+- [ ] brain description isnt capitalised, rest are
+- [ ] heart has weird gap
+- [ ] some too long, max 4 lines - preferably 3. OR make font smaller (must be consistent across organs)
+- [X] make shift click work
+- [X] when selling organs the slot is empyt but items can still be taken from it
+- [X] handle credsits client side, but update on leave on login to store on server.
+- [X] credits not changing server side
+- [X] buying organs always at full durability
  
 ---
 
@@ -25,10 +33,11 @@ wouldnt but better check
 - [X] Add market screen
 - - [X] make screen asset
 - - [X] make menu function
-- - [ ] buy and sell buttons - edits credit data
+- - [X] buy and sell buttons - edits credit data
 - [X] Add network packets
 - - [X] Item bought/sold
 - - [X] get item cost
+- [ ] ~~if you switch to a different organ than in the slot then it shows the wrong estimated cost~~~
 
 ---
 
@@ -59,8 +68,7 @@ they fluctuate
 
 ## Evans WIP
 
-working on menu, needs buy and sell functionality, needs organ descriptions,
-try add price over time to render graph.
+working on menu, needs buy and sell functionality,
 
 ## Mikolajs WIP
 
