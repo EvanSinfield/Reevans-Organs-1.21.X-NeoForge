@@ -2,6 +2,7 @@ package net.reevan.reevansorgans.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -78,5 +79,11 @@ public class MarketBlockEntity extends BlockEntity implements MenuProvider {
 
     public ItemStackHandler getInventory() {
         return this.inventory;
+    }
+
+    public NonNullList<ItemStack> getItemDrops() {
+        NonNullList<ItemStack> drops = NonNullList.create();
+        drops.add(this.inventory.getStackInSlot(IO_SLOT));
+        return drops;
     }
 }

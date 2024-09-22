@@ -4,10 +4,12 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -17,12 +19,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.reevan.reevansorgans.block.entity.MarketBlockEntity;
 import net.reevan.reevansorgans.screen.MarketMenu;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class MarketBlock extends  Block implements EntityBlock {
     public static final VoxelShape SHAPE = Block.box(0,0,0,16,12,16);
@@ -70,7 +75,15 @@ public class MarketBlock extends  Block implements EntityBlock {
 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
+        if (!state.is(newState.getBlock())) {  // Ensure that the block is actually being removed
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof MarketBlockEntity) {
+                MarketBlockEntity marketBE = (MarketBlockEntity) blockEntity;
+                Containers.dropContents(level, pos, marketBE.getItemDrops()); // Drop the inventory contents
+                level.updateNeighbourForOutputSignal(pos, this);  // Notify neighbors
+            }
+            super.onRemove(state, level, pos, newState, movedByPiston);
+        }
     }
 
     @Override

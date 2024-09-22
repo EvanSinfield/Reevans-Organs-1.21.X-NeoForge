@@ -215,7 +215,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
 
         if (organTexture != null) {
             guiGraphics.blit(organTexture, x + 150, y + 12, 0, 0, 32, 32, 32, 32);
-//            guiGraphics.blit(organDesc, x, y, 0, 0, 512, 256, 512, 256);
+            guiGraphics.blit(organDesc, x, y, 0, 0, 512, 256, 512, 256);
         }
 
         this.previousOrgan = this.selectedOrgan;
