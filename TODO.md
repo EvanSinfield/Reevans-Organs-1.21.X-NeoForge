@@ -16,11 +16,7 @@ OR make font smaller (must be consistent across organs)
 
 ### Ver1:
 
-- [ ] market crash event
-- [ ] Commands to help debug market
-- - [ ] show prices / demand
-- - [ ] change prices / demand
-- - [ ] force market update
+- [X] market crash event
 - [X] make particles nicer
 
 ### Future release
@@ -29,6 +25,10 @@ OR make font smaller (must be consistent across organs)
 - - [ ] buffs
 - - [ ] failiure
 - [ ] graph history of organ on screen
+- [ ] Commands to help debug market
+- - [ ] show prices / demand
+- - [ ] change prices / demand
+- - [ ] force market update
 
 ---
 

@@ -15,14 +15,16 @@ import java.util.Random;
 @EventBusSubscriber(modid = ReevansOrgans.MODID)
 public class MarketManager {
     public static final Random random = new Random();
-//     private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        int chance = random.nextInt(1200);
+        int chance = random.nextInt(120000);
 
         // 20 ticks a second, 1/1200 * 20 = 1/60 or ~every minute
         if (chance == 1) {
+            marketCrash(event.getServer());
+        } else if (chance <= 100) {
             updateMarket(event.getServer());
         }
     }
@@ -64,6 +66,31 @@ public class MarketManager {
         marketSaveData.setDemand(demand);
 
 //        LOGGER.info("Market prices: {}", newPrices);
+    }
+
+    public static void marketCrash(MinecraftServer server) {
+        LOGGER.debug("Market crash");
+
+        MarketSaveData marketSaveData = new MarketSaveData();
+        marketSaveData = server.overworld().getDataStorage().computeIfAbsent(
+                new SavedData.Factory<>(marketSaveData::create, marketSaveData::load), "market");
+
+        int organIndex = random.nextInt(0, 8);
+        int[] newPrices = new int[9];
+
+        LOGGER.debug("Selected Index: {}", organIndex);
+
+        for (int i = 0; i < 9; i++) {
+            if (i == organIndex) {
+                newPrices[i] = marketSaveData.getPrices()[i] / random.nextInt(10, 30);
+            } else {
+                newPrices[i] = marketSaveData.getPrices()[i];
+            }
+        }
+
+        LOGGER.debug("new Price: {}", newPrices);
+
+        marketSaveData.setPrices(newPrices);
     }
 
     public static void register() {
